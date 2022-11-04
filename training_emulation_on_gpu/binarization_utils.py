@@ -319,8 +319,8 @@ class binary_conv(Layer):
 		self.trainable_weights=[self.w]
 
 	def call(self, x,mask=None):
-		self.out = self.xnor_wg_conv_op(x,binarize_weight(self.fp16_grad(self.w)))
-		#self.out=K.conv2d(x, kernel=binarize_weight(self.w), padding=self.padding,strides=self.strides ) # Vanilla BNN
+		# self.out = self.xnor_wg_conv_op(x,binarize_weight(self.fp16_grad(self.w)))
+		self.out=K.conv2d(x, kernel=binarize_weight(self.w), padding=self.padding,strides=self.strides ) # Vanilla BNN
 		self.output_dim=self.out.get_shape()
 		return self.out
 
@@ -382,9 +382,9 @@ class binary_conv(Layer):
 
 
 	def  get_output_shape_for(self,input_shape):
-		return (input_shape[0], self.output_dim[1],self.output_dim[2],self.output_dim[3])
+		return (input_shape[0],self.k,self.k, self.nfilters)
 	def compute_output_shape(self,input_shape):
-		return (input_shape[0], self.output_dim[1],self.output_dim[2],self.output_dim[3])
+		return (input_shape[0],self.k,self.k, self.nfilters)
 
 class binary_dense(Layer):
 	def __init__(self,n_in,n_out,first_layer=False,**kwargs):
@@ -399,8 +399,8 @@ class binary_dense(Layer):
 		self.trainable_weights=[self.w]
 
 	def call(self, x,mask=None):
-		self.out = self.xnor_wg_dense_op(x,binarize_weight(self.fp16_grad(self.w)))
-		#self.out = K.dot(x,binarize_weight(self.w)) # Vanilla BNN
+		# self.out = self.xnor_wg_dense_op(x,binarize_weight(self.fp16_grad(self.w)))
+		self.out = K.dot(x,binarize_weight(self.w)) # Vanilla BNN
 		return self.out
 
 	@tf_custom_gradient_method

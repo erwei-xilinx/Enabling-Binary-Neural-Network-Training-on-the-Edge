@@ -17,11 +17,20 @@ sys.path.insert(0, '..')
 from binarization_utils import *
 from model_architectures import get_model
 
+l1 = float(sys.argv[1])
+l2 = float(sys.argv[2])
+l3 = float(sys.argv[3])
+l4 = float(sys.argv[4])
+l5 = float(sys.argv[5])
+l6 = float(sys.argv[6])
+l7 = float(sys.argv[7])
+l8 = float(sys.argv[8])
+
 dataset='binarynet'
 Train=True
 Evaluate=True
 batch_size=100
-epochs=1000
+epochs=5
 
 def load_svhn(path_to_dataset):
 	import scipy.io as sio
@@ -86,9 +95,9 @@ if Train:
 	if not(os.path.exists('models/'+dataset)):
 		os.mkdir('models/'+dataset)
 	for resid_levels in range(1):
-		print 'training with', resid_levels,'levels'
+		print ('training with', resid_levels,'levels')
 		sess=K.get_session()
-		model=get_model(dataset,resid_levels,batch_size)
+		model=get_model(dataset,resid_levels,batch_size, l1, l2, l3, l4, l5, l6, l7, l8)
 		#model.summary()
 
 		#gather all binary dense and binary convolution layers:
@@ -143,12 +152,12 @@ if Train:
 if Evaluate:
 	for resid_levels in range(1):
 		weights_path='models/'+dataset+'/'+str(resid_levels)+'_residuals.h5'
-		model=get_model(dataset,resid_levels,batch_size)
+		model=get_model(dataset,resid_levels,batch_size, l1, l2, l3, l4, l5, l6, l7, l8)
 		model.load_weights(weights_path)
 		opt = keras.optimizers.Adam()
 		model.compile(loss='sparse_categorical_crossentropy',optimizer=opt,metrics=['accuracy'])
 		score=model.evaluate(X_test,y_test,verbose=0, batch_size=batch_size)
-		print "with %d residuals, test loss was %0.4f, test accuracy was %0.4f"%(resid_levels,score[0],score[1])
+		print ("with %d residuals, test loss was %0.4f, test accuracy was %0.4f"%(resid_levels,score[0],score[1]))
 
 
 
