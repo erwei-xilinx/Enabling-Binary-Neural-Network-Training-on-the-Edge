@@ -17,7 +17,7 @@ sys.path.insert(0, '..')
 from binarization_utils import *
 from model_architectures import get_model
 
-dataset='binarynet'
+dataset='MNIST'
 Train=True
 Evaluate=True
 batch_size=100
@@ -86,7 +86,7 @@ if Train:
 	if not(os.path.exists('models/'+dataset)):
 		os.mkdir('models/'+dataset)
 	for resid_levels in range(1):
-		print 'training with', resid_levels,'levels'
+		print ('training with', resid_levels,'levels')
 		sess=K.get_session()
 		model=get_model(dataset,resid_levels,batch_size)
 		#model.summary()
@@ -148,7 +148,7 @@ if Evaluate:
 		opt = keras.optimizers.Adam()
 		model.compile(loss='sparse_categorical_crossentropy',optimizer=opt,metrics=['accuracy'])
 		score=model.evaluate(X_test,y_test,verbose=0, batch_size=batch_size)
-		print "with %d residuals, test loss was %0.4f, test accuracy was %0.4f"%(resid_levels,score[0],score[1])
+		print ("with %d residuals, test loss was %0.4f, test accuracy was %0.4f"%(resid_levels,score[0],score[1]))
 
 
 

@@ -320,7 +320,7 @@ class binary_conv(Layer):
 
 	def call(self, x,mask=None):
 		self.out = self.xnor_wg_conv_op(x,binarize_weight(self.fp16_grad(self.w)))
-		#self.out=K.conv2d(x, kernel=binarize_weight(self.w), padding=self.padding,strides=self.strides ) # Vanilla BNN
+		# self.out=K.conv2d(x, kernel=binarize_weight(self.w), padding=self.padding,strides=self.strides ) # Vanilla BNN
 		self.output_dim=self.out.get_shape()
 		return self.out
 
@@ -400,7 +400,7 @@ class binary_dense(Layer):
 
 	def call(self, x,mask=None):
 		self.out = self.xnor_wg_dense_op(x,binarize_weight(self.fp16_grad(self.w)))
-		#self.out = K.dot(x,binarize_weight(self.w)) # Vanilla BNN
+		# self.out = K.dot(x,binarize_weight(self.w)) # Vanilla BNN
 		return self.out
 
 	@tf_custom_gradient_method
